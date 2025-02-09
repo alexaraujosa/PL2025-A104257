@@ -1,6 +1,6 @@
 # TPC1 - Somador On/Off
 
-**Realizado em:** 08/02/2025 
+**Realizado em:** 08/02/2025  
 **Nome:** Alex Araújo de Sá  
 **Número Mecanográfico:** A104257  
 ![](./../Imagens/Avatar.png)
