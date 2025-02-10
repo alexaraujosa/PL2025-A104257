@@ -32,4 +32,7 @@ def main(argv):
     somador(argv[1])
 
 if __name__ == "__main__":
-    main(sys.argv)
+    if len(sys.argv) >= 2:
+        main(sys.argv)
+    else:
+        print("Missing arguments. Usage: python3 somador.py <text>")
