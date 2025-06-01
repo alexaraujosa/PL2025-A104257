@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>AST Viewer</title>
+    <link rel="stylesheet" href="./css/astviewer.css">
+    <script type="module" src="./js/astviewer.js" defer></script>
+</head>
+<body>
+    <div class="main-grid">
+        <div class="controls">
+            <div class="info">
+                <div class="left">
+                    <h1>AST Viewer</h1>
+                    <p>
+                        This is a tool designed to debug the AST produced by the Standard Pascal Compiler that is the 
+                        target of this project. You can get an AST dump by running 
+                        <code>runTest.sh dumpast &lt;case&gt;</code>.
+                        <br/>
+                        <br/>
+                        This tool does <b>NOT</b> automatically update the AST structure based on the compiler's source 
+                        code. In order for this tool to accurately represent AST dumps from the compiler, the file 
+                        <code>js/astStruct.js</code> must be manually updated to reflect any changes to the source code.
+                    </p>
+                </div>
+                <div class="right">
+                    <h2>Usage & Notes</h2>
+                    <ul>
+                        <li>
+                            In order to upload an AST dump, click on the <code>Upload AST Dump</code> button on the 
+                            control panel. Doing so will immediately swap the currently loaded AST with the one
+                            resulting from the selected AST dump.
+                        </li>
+                        <li>
+                            Upon uploading an AST dump, all nodes and properties start up collapsed, with the exception
+                            of the root node.
+                        </li>
+                        <li>
+                            To open and close a given node, click on the line with bold text and a chevron (<b>▾</b>).
+                        </li>
+                        <li>
+                            This tool will attempt to process as much of the tree as possible. If an error occurs while
+                            processing a given node, only it's subtree will be skipped, and processing will continue 
+                            from the position it stopped. In place of the erroneous node, an error message will be 
+                            displayed.
+                        </li>
+                        <li>
+                            Clicking on <code>Expand / Collapse All</code> will expand or collapse the entire AST tree,
+                            independently of the combination of collapsed and expanded nodes on the tree, based on 
+                            an internal state.
+                        </li>
+                        <li>
+                            Clicking on <code>Expand / Collapse All (No Pos)</code> will expand or collapse the entire 
+                            AST tree, except for the position fields, independently of the combination of collapsed and 
+                            expanded nodes on the tree, based on an internal state.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="ast-button" id="uploadAST">Upload AST Dump</button>
+                <input type="file" name="ASTInput" accept=".json" id="_AST" hidden />
+
+                <button class="ast-button" id="toggleCollapseBtn">Expand / Collapse All</button>
+                <button class="ast-button" id="toggleCollapseNoPosBtn">Expand / Collapse (No Pos)</button>
+            </div>
+        </div>
+        <div class="ast-tree" id="astTree">
+            <div class="ast-node">
+                <div class="type" name="type">ProgramNode</div>
+                <div class="body">
+                    <div class="prop" name="pos">
+                        <div class="prop-name">Position:</div>
+                        <div class="prop-body">
+                            <div class="prop" name="start">
+                                <div class="prop-name">Start:</div>
+                                <div class="prop-body">
+                                    <div class="field" name="raw">
+                                        <div class="field-name">Raw:</div>
+                                        <div class="field-value">0</div>
+                                    </div>
+                                    <div class="field" name="row">
+                                        <div class="field-name">Row:</div>
+                                        <div class="field-value">1</div>
+                                    </div>
+                                    <div class="field" name="col">
+                                        <div class="field-name">Col:</div>
+                                        <div class="field-value">1</div>
+                                    </div>
+                                    <div class="field" name="col">
+                                        <div class="field-name">Test:</div>
+                                        <div class="field-value">
+                                            <ul>
+                                                <li>1</li>
+                                                <li>2</li>
+                                                <li>3</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="prop" name="end">
+                                <div class="prop-name">End:</div>
+                                <div class="prop-body">
+                                    <div class="field" name="raw">
+                                        <div class="field-name">Raw:</div>
+                                        <div class="field-value">0</div>
+                                    </div>
+                                    <div class="field" name="row">
+                                        <div class="field-name">Row:</div>
+                                        <div class="field-value">1</div>
+                                    </div>
+                                    <div class="field" name="col">
+                                        <div class="field-name">Col:</div>
+                                        <div class="field-value">1</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ast-node"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

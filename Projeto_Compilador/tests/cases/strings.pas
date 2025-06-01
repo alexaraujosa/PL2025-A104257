@@ -1,0 +1,6 @@
+'A'
+';'                        
+'Pascal'
+' '
+''''
+'This is a character string' 

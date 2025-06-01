@@ -1,0 +1,17 @@
+/**/logs/**
+/**/tmp/**
+__pycache__
+backup
+.vscode
+
+*_old.*
+* copy.*
+*.bak
+*.out
+*.zip
+*.log
+
+# Generated files
+compiler/parser.out
+compiler/parsetab.py
+astdump.json

@@ -1,0 +1,6 @@
+- No procedure hoisting.
+- Scope kinds: global and local
+  - Symbol shadowing exists
+- Gotos are restricted to their scopes.
+  - They cannot jump to a label further down their position.
+- Implement stdlib (built-in types, functions)

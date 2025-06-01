@@ -1,0 +1,2 @@
+- Secções foram movidas para manter a spec.
+- Capitalização de tipos e variáveis alterados para manter a spec.

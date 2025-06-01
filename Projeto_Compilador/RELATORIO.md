@@ -1,0 +1,30 @@
+# Relatório Técnico - Construção de um Compilador para Pascal Standard
+## Projeto de Processamento de Linguagens 2024/2025
+
+### Data: 01/06/2025 
+### Grupo 40 - DABoys
+- A96268	Paulo Alexandre Rodrigues Ferreira
+- A104257	Alex Araújo de Sá
+- A104271	Rafael Santos Fernandes
+
+## Objetivo do Projeto
+
+O objetivo deste projeto foi desenvolver um compilador para a linguagem Pascal standard. O compilador deveria ser capaz de processar um dado texto-fonte na linguagem Pascal Standard e de o analizar e transformar em fases sucessivas até chegar a um programa compilado tendo como alvo a Máquina Virtual EWVM.
+
+## Desenvolvimento do Projeto
+Para o desenvolvimento do projeto, começou-se por obter e analizar a especificação do Pascal Standard, utilizando para isso a o manual [ISO Pascal Standard User Manual and Report, Fourth Edition](https://seriouscomputerist.atariverse.com/media/pdf/book/Pascal%20-%20Manual%20&%20Report.pdf), de Kathleen Jensen e Niklaus Wirth. Tal manual foi utilizado como referÊncia durante todas as etapas de desenvolvimento.
+
+### Análise Léxical
+A Análise Lexical foi desenvolvida de acordo com as definições presentes nas Secções 0 e 1 do Manual. O lexer contido neste projeto foi implementado utilizando a ferramenta ply.lex, como requerido pelo projeto, e recorre a doies estados para a análise lexical: um estado normal e um estado de comentário. O lexer processa todos os tokens existentes de forma sequencial até encontrar um token de abertura de comentários, que leva a que o estado mude para o estado de comentários, onde o lexer ignora todo e qualquer caractére até encontrar uma sequência de caratéres que representem o fecho de comentários, momento após o qual o lexer prossegue o seu funcionamento habitual. Como definido pelo Manual, existem dois tipos de delimitadores para comentários, `{-`/`-}` e `{*`/`*}`, que podem ser misturados sem alterar o significado léxico do código. Tal comportamento é respeitado pelo lexer.
+Ao longo do processo de reconhecimento de tokens, o lexer associa a cada token a sua posição no texto-fonte, através do seu offset a partir do início do texto, bem como da sua posição em termos de linhas e colunas, que é utilizado pelas fazes seguintes para facilitar a comunicação de anomalias com o utilizador.
+
+### Análise Sintática
+A Anlálise Sintática foi desenvolvida de acordo com as definições presentes nas Secções 2 a 11 do Manual, excluíndo-se as Secções 9 e 11 por se tratarem de funcionalidades impossíveis de representar na EWVM. Originalmente foi planeado a total implementação da especificação tal como descrita, no entanto, tal não foi possível devido a problemas técnicos e escassês de tempo. No entanto, apesar de não estar disponível nas fases seguintes, a maior parte das funcionalidades da especificação encontram-se completamente implentadas e descritas em termos de Nodos da *Abstract Syntax Tree* presente no projeto. Para o desenvolvimento do analisador sintático, foi utilizada a ferramenta ply.yacc, que se revelou ser extremamente difícil de trabalhar e ativamente hostil a esforços por parte dos desenvolvedores para seguir a especificação tal como delineada. Devido a tais restrições fora do controlo do grupo de trabalho, partes da especificação tiveram de ser adaptadas e outras tiveram de ser completamente reestruturadas de forma a ser possível representar as mesmas utilizando esta ferramenta. Esta fase foi desenhada originalmente com um foco em tolerância a falhas, tentando apanhar o maior número de erros possíveis, suportada por uma suite de testes extensiva. Porém, a escassês de tempo, juntamente com a rigidez da ferramenta em métodos de recuperação de erros, levou a que esse objetivo tivesse de ser abandonado prematuramente, levando a uma inconsistência nos meios de tratamentos de erros na parte léxical.
+
+Esta fase é reponsável por consumir a stream de tokens produzida pelo lexer e derivar uma *Abstract Syntax Tree*, desenhada para se assemelhar o mais possível á especificação como descrita no Manual, com o objetivo de fornecer uma estrutura de dados clara e robusta para uma melhor experiência de desenvolvimento nas fases seguintes.
+
+### Análise Semântica
+A Análise Semântica não foi completamente alcançada, encontrando-se incompleta e mal testada em comparação com as fases anteriores. Infelizmente, devido aos problemas previamente mencionados, especialmente problemas relacionados á gestão de tempo, esta fase não faz bom proveito das estruturas desenvolvidas nas fases anteriores nem implementa vários elementos da linguagem, como *Records*, *Pointers* e *Case Statements*. Do mesmo modo, não foi possível a implementação de elementos necessários para o correto processamento de todos os exemplos apresentados no guião do projeto, estando apenas os exemplos 1 a 4 funcionais dentro dos testes que a equipa de desenvolvimento teve oportunidade de implementar. Os exemplos 5 a 7, apesar de serem teóricamente suportados pelo compilador, revelam anomalias no mesmo que levam a que o código gerado seja incompleto ou apresente erros algorítmicos, erros quais que a equipa não teve oportunidade de corrigir antes do tempo limite para a entrega deste projeto.
+
+### Geração de Código
+A fase de Geração de Código faz uso das estruturas desenvolvidas nas fases anteriores para a transformação da representação intermédia do programa para código *assembly* executável pela EWVM. Esta fase foi desenvolvida para fazer uso da *Abstract Syntax Tree* para fins de determinação do fluxo lógico do programa, e uso de Tabelas De Símbolos desenvolvidas na fase anterior para determinar a estrutura de tipos do programa. Devido aos problemas mencionados anteriormente, a Tabela de Símbolos não se encontra a um nível funcional suficiente para cumprir o seu propósito, pelo que se atribuíu funções adicionais de tipagem á *Abstract Syntax Tree*, que contém todos os dados relativos ao programa no momento da geração do código.
